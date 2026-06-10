@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tab Compass · 页罗盘</title>
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <main class="settings">
+      <header>
+        <h1>Tab Compass · 页罗盘</h1>
+        <p>Find and manage your open tabs</p>
+      </header>
+
+      <form id="settings-form">
+        <section>
+          <h2>展示与统计</h2>
+          <div class="field-grid">
+            <label>
+              <span>每个分组展示数量</span>
+              <input id="top-size" type="number" min="1" max="10" required />
+              <small>范围 1-10。</small>
+            </label>
+            <label>
+              <span>计入“最近在看”的最短秒数</span>
+              <input id="recent-seconds" type="number" min="1" max="60" required />
+              <small>页面连续显示达到该时长后才会计入。</small>
+            </label>
+            <label>
+              <span>统计口径</span>
+              <select id="stats-window-mode">
+                <option value="rolling-active-24h">过去 24h（滚动窗口，跳过整天未开浏览器的空白日）</option>
+                <option value="calendar-day">北京时间今日</option>
+              </select>
+              <small>时间累计口径，如果长期不关机，推荐使用过去 24h（滚动窗口）。</small>
+            </label>
+          </div>
+
+          <div class="work-activity-section">
+            <span class="section-label">哪些行为算“工作行为”</span>
+            <div class="activity-list">
+              <label class="activity-item">
+                <input type="checkbox" name="work-activity-kind" value="typing" />
+                <span class="activity-copy">
+                  <span class="activity-title">键盘键入</span>
+                  <small>键盘输入、表单编辑、文本修改。</small>
+                </span>
+              </label>
+
+              <label class="activity-item">
+                <input type="checkbox" name="work-activity-kind" value="clipboard" />
+                <span class="activity-copy">
+                  <span class="activity-title">剪贴板操作</span>
+                  <small>复制、剪切、粘贴等动作。</small>
+                </span>
+              </label>
+
+              <label class="activity-item">
+                <input type="checkbox" name="work-activity-kind" value="selection" />
+                <span class="activity-copy">
+                  <span class="activity-title">选中文本</span>
+                  <small>划词、选中内容进行查看或整理。</small>
+                </span>
+              </label>
+
+              <div class="activity-item activity-item-split">
+                <label class="activity-check">
+                  <input type="checkbox" name="work-activity-kind" value="pointer" />
+                  <span class="activity-copy">
+                    <span class="activity-title">点击 / 指针操作</span>
+                    <small>点击按钮、切换控件等操作。</small>
+                  </span>
+                </label>
+                <label class="pointer-threshold">
+                  <span>达到</span>
+                  <input id="pointer-work-threshold" type="number" min="1" step="1" />
+                  <span>次后计入</span>
+                </label>
+              </div>
+
+              <label class="activity-item">
+                <input type="checkbox" name="work-activity-kind" value="scroll" />
+                <span class="activity-copy">
+                  <span class="activity-title">滚动浏览</span>
+                  <small>阅读文档、代码、表格时的滚动。</small>
+                </span>
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2>图标</h2>
+          <p class="section-note">
+            上传你自己的小图标，会立即更新 Chrome 工具栏和扩展菜单中的图标。Chrome 扩展管理页使用安装包内的默认图标，无法由扩展动态修改。
+          </p>
+          <div class="logo-card">
+            <div class="logo-preview-wrap">
+              <img id="logo-preview" class="logo-preview" alt="当前图标预览" hidden />
+              <img
+                id="logo-placeholder"
+                class="logo-preview"
+                src="assets/icons/icon128.png"
+                alt="默认图标预览"
+              />
+            </div>
+            <div class="logo-controls">
+              <label class="logo-upload">
+                <span>上传图标</span>
+                <input id="logo-upload-input" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml" />
+                <small>建议上传简洁的方形图形，系统会自动规范为 128x128 并适配小尺寸显示。</small>
+              </label>
+              <div class="logo-actions">
+                <button id="clear-logo-button" type="button">恢复默认图标</button>
+                <span id="logo-meta" class="logo-meta">未上传自定义图标</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2>站点范围</h2>
+          <p class="section-note">每行或逗号分隔一个域名，填写主域名会同时匹配其子域名。</p>
+          <div class="domain-grid">
+            <label>
+              <span>白名单</span>
+              <textarea id="allowlist" rows="7" placeholder="留空表示允许全部站点&#10;docs.google.com&#10;notion.so"></textarea>
+              <small>填写后只统计这里列出的站点。</small>
+            </label>
+            <label>
+              <span>黑名单</span>
+              <textarea id="blocklist" rows="7" placeholder="youtube.com&#10;example.com"></textarea>
+              <small>黑名单优先于白名单。</small>
+            </label>
+          </div>
+        </section>
+
+        <div class="actions">
+          <button type="submit" class="primary">保存设置</button>
+          <button id="reset-button" type="button">恢复默认</button>
+          <span id="status" role="status"></span>
+        </div>
+      </form>
+
+      <aside>
+        <strong>权限说明</strong>
+        <p>为了识别普通网页里的点击、输入、滚动等行为，扩展需要访问 HTTP/HTTPS 页面。数据只保存在本机 Chrome 的扩展存储中，不会上报。</p>
+      </aside>
+    </main>
+    <script src="options.js" type="module"></script>
+  </body>
+</html>

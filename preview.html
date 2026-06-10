@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tab Compass · 页罗盘 Preview</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="topbar">
+        <div>
+          <h1>Tab Compass · 页罗盘</h1>
+          <p id="summary">Find and manage your open tabs</p>
+        </div>
+        <div class="topbar-actions">
+          <button id="theme-button" class="icon-button" type="button" title="切换主题" aria-label="切换主题">
+            <span class="theme-icon" aria-hidden="true">&#9728;</span>
+          </button>
+          <button id="settings-button" class="icon-button" type="button" title="设置" aria-label="设置">
+            &#9881;
+          </button>
+        </div>
+      </header>
+
+      <div class="controls">
+        <label class="search">
+          <span class="sr-only">搜索已打开页面</span>
+          <input id="search-input" type="search" placeholder="搜索标题、网址或域名" autocomplete="off" />
+        </label>
+        <div class="control-actions">
+          <button id="aggregate-button" class="mode-button" type="button" aria-pressed="false">
+            聚合
+          </button>
+          <button id="dedupe-button" class="mode-button mode-button-secondary" type="button">
+            去重
+          </button>
+        </div>
+      </div>
+
+      <div id="notice" class="notice" role="status" hidden></div>
+      <section id="groups" class="groups" aria-live="polite"></section>
+    </main>
+
+    <template id="group-template">
+      <section class="group">
+        <div class="group-head">
+          <div>
+            <h2></h2>
+            <p></p>
+          </div>
+          <span class="group-count"></span>
+        </div>
+        <div class="items"></div>
+      </section>
+    </template>
+
+    <template id="item-template">
+      <article class="tab-item">
+        <button class="open-tab" type="button">
+          <img class="favicon" alt="" />
+          <span class="meta">
+            <span class="title-row">
+              <span class="title"></span>
+              <span class="aggregate-count" hidden></span>
+            </span>
+            <span class="url"></span>
+            <span class="stats"></span>
+          </span>
+        </button>
+        <button class="pin-button" type="button" title="置顶此页面" aria-label="置顶此页面"></button>
+      </article>
+    </template>
+
+    <script src="popup.js?preview=1" type="module"></script>
+  </body>
+</html>
