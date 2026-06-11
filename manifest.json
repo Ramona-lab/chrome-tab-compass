@@ -3,7 +3,7 @@
   "name": "Tab Compass",
   "version": "0.2.0",
   "description": "Find and manage your open tabs.",
-  "permissions": ["tabs", "storage", "alarms", "idle"],
+  "permissions": ["tabs", "storage", "alarms"],
   "host_permissions": ["http://*/*", "https://*/*"],
   "background": {
     "service_worker": "service_worker.js",
